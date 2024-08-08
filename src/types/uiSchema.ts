@@ -25,5 +25,4 @@ export type UISchemaField =
   | UISchemaArrayField
   | UISchemaValueField
 
-// formSchemaに基づいてuiSchemaの型を導出
 export type UISchemaType = Record<string, UISchemaField>

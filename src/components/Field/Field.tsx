@@ -29,10 +29,8 @@ export const Field: React.FC<UISchemaField> = (props: UISchemaField) => {
   }
 
   return (
-    <div className="mb-4">
-      {props.label && (
-        <label className="block text-gray-700">{props.label}</label>
-      )}
+    <div>
+      {props.label && <label>{props.label}</label>}
 
       <input
         {...register(props.id)}
