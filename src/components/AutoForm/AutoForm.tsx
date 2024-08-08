@@ -9,7 +9,7 @@ import { UISchemaField, UISchemaType } from '@/types/uiSchema'
 
 export interface AutoFormProps<T> {
   formSchema: ZodSchema<T>
-  uiSchema: UISchemaType
+  uiSchema: UISchemaType<T>
 }
 
 export const AutoForm = <T extends Record<string, any>>({
@@ -31,7 +31,7 @@ export const AutoForm = <T extends Record<string, any>>({
     <FormProvider {...methods}>
       <form onSubmit={handleSubmit(onSubmit)}>
         {Object.entries(uiSchema).map(
-          ([key, field]: [string, UISchemaField]) => {
+          ([key, field]: [string, UISchemaField<any>]) => {
             if (field.type === 'object') {
               return (
                 <ObjectField

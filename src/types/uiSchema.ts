@@ -1,16 +1,16 @@
-type UISchemaObjectField = {
+type UISchemaObjectField<T> = {
   type: 'object'
   id: string
   label?: string
-  fields: UISchemaType
+  fields: UISchemaType<T>
 }
 
-export type UISchemaArrayField = {
+export type UISchemaArrayField<T> = {
   type: 'array'
   id: string
   label?: string
-  blankValue: string | object
-  item: Omit<UISchemaValueField, 'id'> | Omit<UISchemaObjectField, 'id'>
+  blankValue: T
+  item: Omit<UISchemaValueField, 'id'> | Omit<UISchemaObjectField<T>, 'id'>
 }
 
 type UISchemaValueField = {
@@ -20,9 +20,15 @@ type UISchemaValueField = {
   placeholder?: string
 }
 
-export type UISchemaField =
-  | UISchemaObjectField
-  | UISchemaArrayField
+export type UISchemaField<T> =
+  | UISchemaObjectField<T>
+  | UISchemaArrayField<any>
   | UISchemaValueField
 
-export type UISchemaType = Record<string, UISchemaField>
+export type UISchemaType<T> = {
+  [K in keyof T]: T[K] extends Array<infer U>
+    ? UISchemaArrayField<U>
+    : T[K] extends object
+      ? UISchemaObjectField<T[K]>
+      : UISchemaValueField
+}

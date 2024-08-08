@@ -3,14 +3,9 @@ import { useFieldArray, useFormContext } from 'react-hook-form'
 import { Field } from '../Field/Field'
 import { UISchemaArrayField } from '@/types/uiSchema'
 
-type Props = Omit<UISchemaArrayField, 'type'>
+type Props<T> = Omit<UISchemaArrayField<T>, 'type'>
 
-export const ArrayField: React.FC<Props> = ({
-  id,
-  label,
-  item,
-  blankValue,
-}) => {
+export const ArrayField = <T,>({ id, label, item, blankValue }: Props<T>) => {
   const { control } = useFormContext()
   const { fields, append, remove } = useFieldArray({
     control,

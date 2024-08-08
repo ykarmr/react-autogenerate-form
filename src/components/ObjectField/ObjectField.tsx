@@ -6,7 +6,7 @@ import { ArrayField } from '../ArrayField'
 interface ObjectFieldProps {
   id: string
   label?: string
-  fields: UISchemaType
+  fields: UISchemaType<any>
 }
 
 export const ObjectField: React.FC<ObjectFieldProps> = ({
@@ -18,40 +18,42 @@ export const ObjectField: React.FC<ObjectFieldProps> = ({
     <div>
       {label && <label>{label}</label>}
 
-      {Object.entries(fields).map(([key, field]: [string, UISchemaField]) => {
-        if (field.type === 'object') {
+      {Object.entries(fields).map(
+        ([key, field]: [string, UISchemaField<any>]) => {
+          if (field.type === 'object') {
+            return (
+              <ObjectField
+                id={`${id}.${field.id}`}
+                key={`${id}.${field.id}`}
+                label={field.label}
+                fields={field.fields}
+              />
+            )
+          }
+
+          if (field.type === 'array') {
+            return (
+              <ArrayField
+                id={`${id}.${field.id}`}
+                key={`${id}.${field.id}`}
+                label={field.label}
+                item={field.item}
+                blankValue={field.blankValue}
+              />
+            )
+          }
+
           return (
-            <ObjectField
+            <Field
               id={`${id}.${field.id}`}
               key={`${id}.${field.id}`}
               label={field.label}
-              fields={field.fields}
+              placeholder={field.placeholder}
+              type={field.type}
             />
           )
         }
-
-        if (field.type === 'array') {
-          return (
-            <ArrayField
-              id={`${id}.${field.id}`}
-              key={`${id}.${field.id}`}
-              label={field.label}
-              item={field.item}
-              blankValue={field.blankValue}
-            />
-          )
-        }
-
-        return (
-          <Field
-            id={`${id}.${field.id}`}
-            key={`${id}.${field.id}`}
-            label={field.label}
-            placeholder={field.placeholder}
-            type={field.type}
-          />
-        )
-      })}
+      )}
     </div>
   )
 }

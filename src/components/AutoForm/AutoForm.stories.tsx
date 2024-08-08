@@ -32,7 +32,7 @@ const formSchema = z.object({
 
 type FormSchemaType = z.infer<typeof formSchema>
 
-const uiSchema: UISchemaType = {
+const uiSchema: UISchemaType<FormSchemaType> = {
   name: {
     id: 'name',
     label: 'Full Name',
@@ -51,12 +51,12 @@ const uiSchema: UISchemaType = {
     placeholder: 'Enter your email',
     type: 'email',
   },
-  password: {
-    id: 'password',
-    label: 'Password',
-    placeholder: 'Enter a secure password',
-    type: 'password',
-  },
+  // password: {
+  //   id: 'password',
+  //   label: 'Password',
+  //   placeholder: 'Enter a secure password',
+  //   type: 'password',
+  // },
   hobbies: {
     type: 'array',
     id: 'hobbies',

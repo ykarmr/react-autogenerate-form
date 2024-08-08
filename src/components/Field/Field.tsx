@@ -5,7 +5,9 @@ import { ArrayField } from '@/components/ArrayField'
 import { UISchemaField } from '@/types/uiSchema'
 import { ErrorMessage } from '@hookform/error-message'
 
-export const Field: React.FC<UISchemaField> = (props: UISchemaField) => {
+export const Field: React.FC<UISchemaField<any>> = (
+  props: UISchemaField<any>
+) => {
   const {
     register,
     formState: { errors },
