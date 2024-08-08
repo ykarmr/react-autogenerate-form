@@ -1,10 +1,11 @@
 import React from 'react'
 import { Field } from '../Field/Field'
 import { UISchemaType, UISchemaField } from '@/types/uiSchema'
+import { ArrayField } from '../ArrayField'
 
 interface ObjectFieldProps {
   id: string
-  label: string
+  label?: string
   fields: UISchemaType
 }
 
@@ -14,8 +15,9 @@ export const ObjectField: React.FC<ObjectFieldProps> = ({
   fields,
 }) => {
   return (
-    <div className="mb-4">
-      <label className="block text-gray-700">{label}</label>
+    <div>
+      {label && <label>{label}</label>}
+
       {Object.entries(fields).map(([key, field]: [string, UISchemaField]) => {
         if (field.type === 'object') {
           return (
@@ -24,6 +26,18 @@ export const ObjectField: React.FC<ObjectFieldProps> = ({
               key={`${id}.${field.id}`}
               label={field.label}
               fields={field.fields}
+            />
+          )
+        }
+
+        if (field.type === 'array') {
+          return (
+            <ArrayField
+              id={`${id}.${field.id}`}
+              key={`${id}.${field.id}`}
+              label={field.label}
+              item={field.item}
+              blankValue={field.blankValue}
             />
           )
         }

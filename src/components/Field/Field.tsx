@@ -1,7 +1,9 @@
 import React from 'react'
 import { useFormContext } from 'react-hook-form'
 import { ObjectField } from '@/components/ObjectField'
+import { ArrayField } from '@/components/ArrayField'
 import { UISchemaField } from '@/types/uiSchema'
+import { ErrorMessage } from '@hookform/error-message'
 
 export const Field: React.FC<UISchemaField> = (props: UISchemaField) => {
   const {
@@ -15,22 +17,40 @@ export const Field: React.FC<UISchemaField> = (props: UISchemaField) => {
     )
   }
 
+  if (props.type === 'array') {
+    return (
+      <ArrayField
+        id={props.id}
+        label={props.label}
+        item={props.item}
+        blankValue={props.blankValue}
+      />
+    )
+  }
+
   return (
     <div className="mb-4">
-      <label className="block text-gray-700">{props.label}</label>
+      {props.label && (
+        <label className="block text-gray-700">{props.label}</label>
+      )}
+
       <input
         {...register(props.id)}
         key={props.id}
         name={props.id}
         type={props.type}
         placeholder={props.placeholder}
-        className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"
       />
-      {errors[props.id] && (
-        <span className="text-red-500 text-sm">
-          {errors[props.id]?.message as string}
-        </span>
-      )}
+      <ErrorMessage
+        errors={errors}
+        name={props.id}
+        render={({ messages }) =>
+          messages &&
+          Object.entries(messages).map(([type, message]) => (
+            <p key={type}>{message}</p>
+          ))
+        }
+      />
     </div>
   )
 }

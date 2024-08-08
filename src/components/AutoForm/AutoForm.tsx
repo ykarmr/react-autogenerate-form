@@ -4,6 +4,7 @@ import { ZodSchema } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Field } from '@/components/Field'
 import { ObjectField } from '@/components/ObjectField'
+import { ArrayField } from '@/components/ArrayField'
 import { UISchemaField, UISchemaType } from '@/types/uiSchema'
 
 export interface AutoFormProps<T> {
@@ -16,6 +17,7 @@ export const AutoForm = <T extends Record<string, any>>({
   uiSchema,
 }: AutoFormProps<T>) => {
   const methods = useForm<T>({
+    criteriaMode: 'all',
     resolver: zodResolver(formSchema),
   })
 
@@ -27,7 +29,7 @@ export const AutoForm = <T extends Record<string, any>>({
 
   return (
     <FormProvider {...methods}>
-      <form onSubmit={handleSubmit(onSubmit)} className="max-w-md mx-auto">
+      <form onSubmit={handleSubmit(onSubmit)}>
         {Object.entries(uiSchema).map(
           ([key, field]: [string, UISchemaField]) => {
             if (field.type === 'object') {
@@ -40,6 +42,19 @@ export const AutoForm = <T extends Record<string, any>>({
                 />
               )
             }
+
+            if (field.type === 'array') {
+              return (
+                <ArrayField
+                  id={`${field.id}`}
+                  key={`${field.id}`}
+                  label={field.label}
+                  item={field.item}
+                  blankValue={field.blankValue}
+                />
+              )
+            }
+
             return (
               <Field
                 key={field.id}

@@ -14,13 +14,19 @@ type Story = StoryObj<typeof AutoForm>
 
 const formSchema = z.object({
   name: z.string().min(1, 'Name is required'),
-  age: z.number().min(18, 'You must be at least 18 years old'),
+  age: z.number().min(0, 'Age must be a positive number'),
   email: z.string().email('Invalid email address'),
-  password: z.string().min(8, 'Password must be at least 8 characters'),
+  hobbies: z.array(
+    z.object({
+      street: z.string().min(1, 'Street is required'),
+      city: z.string().min(1, 'City is required'),
+      zipCode: z.string().min(1, 'Zip Code is required'),
+    })
+  ),
   address: z.object({
     street: z.string().min(1, 'Street is required'),
     city: z.string().min(1, 'City is required'),
-    zipCode: z.string().min(5, 'Zip code is required'),
+    zipCode: z.string().min(1, 'Zip Code is required'),
   }),
 })
 
@@ -37,6 +43,7 @@ const uiSchema: UISchemaType = {
     id: 'age',
     label: 'Age',
     placeholder: 'Enter your age',
+    type: 'number',
   },
   email: {
     id: 'email',
@@ -49,6 +56,39 @@ const uiSchema: UISchemaType = {
     label: 'Password',
     placeholder: 'Enter a secure password',
     type: 'password',
+  },
+  hobbies: {
+    type: 'array',
+    id: 'hobbies',
+    label: 'Hobbies',
+    blankValue: {
+      street: 'test',
+      city: 'testq',
+      zipCode: 'tesra',
+    },
+    item: {
+      type: 'object',
+      fields: {
+        street: {
+          id: 'street',
+          label: 'Street',
+          placeholder: 'Enter your street',
+          type: 'text',
+        },
+        city: {
+          id: 'city',
+          label: 'City',
+          placeholder: 'Enter your city',
+          type: 'text',
+        },
+        zipCode: {
+          id: 'zipCode',
+          label: 'Zip Code',
+          placeholder: 'Enter your zip code',
+          type: 'text',
+        },
+      },
+    },
   },
   address: {
     id: 'address',
