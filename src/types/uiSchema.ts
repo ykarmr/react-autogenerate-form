@@ -22,6 +22,7 @@ type UISchemaValueField = {
 
 export type UISchemaField<T> =
   | UISchemaObjectField<T>
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   | UISchemaArrayField<any>
   | UISchemaValueField
 

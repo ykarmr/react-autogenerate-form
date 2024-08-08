@@ -6,6 +6,7 @@ import { ArrayField } from '../ArrayField'
 interface ObjectFieldProps {
   id: string
   label?: string
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   fields: UISchemaType<any>
 }
 
@@ -19,7 +20,8 @@ export const ObjectField: React.FC<ObjectFieldProps> = ({
       {label && <label>{label}</label>}
 
       {Object.entries(fields).map(
-        ([key, field]: [string, UISchemaField<any>]) => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        ([, field]: [string, UISchemaField<any>]) => {
           if (field.type === 'object') {
             return (
               <ObjectField

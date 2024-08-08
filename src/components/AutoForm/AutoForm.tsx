@@ -1,4 +1,3 @@
-import React from 'react'
 import { useForm, SubmitHandler, FormProvider } from 'react-hook-form'
 import { ZodSchema } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -12,10 +11,11 @@ export interface AutoFormProps<T> {
   uiSchema: UISchemaType<T>
 }
 
-export const AutoForm = <T extends Record<string, any>>({
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function AutoForm<T extends Record<string, any>>({
   formSchema,
   uiSchema,
-}: AutoFormProps<T>) => {
+}: AutoFormProps<T>) {
   const methods = useForm<T>({
     criteriaMode: 'all',
     resolver: zodResolver(formSchema),
@@ -31,7 +31,8 @@ export const AutoForm = <T extends Record<string, any>>({
     <FormProvider {...methods}>
       <form onSubmit={handleSubmit(onSubmit)}>
         {Object.entries(uiSchema).map(
-          ([key, field]: [string, UISchemaField<any>]) => {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          ([, field]: [string, UISchemaField<any>]) => {
             if (field.type === 'object') {
               return (
                 <ObjectField

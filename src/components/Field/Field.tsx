@@ -5,7 +5,9 @@ import { ArrayField } from '@/components/ArrayField'
 import { UISchemaField } from '@/types/uiSchema'
 import { ErrorMessage } from '@hookform/error-message'
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const Field: React.FC<UISchemaField<any>> = (
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   props: UISchemaField<any>
 ) => {
   const {
@@ -44,12 +46,14 @@ export const Field: React.FC<UISchemaField<any>> = (
       <ErrorMessage
         errors={errors}
         name={props.id}
-        render={({ messages }) =>
-          messages &&
-          Object.entries(messages).map(([type, message]) => (
-            <p key={type}>{message}</p>
-          ))
-        }
+        render={({ messages }) => {
+          return (
+            messages &&
+            Object.entries(messages).map(([type, message]) => {
+              return <p key={type}>{message}</p>
+            })
+          )
+        }}
       />
     </div>
   )
