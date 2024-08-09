@@ -2,8 +2,6 @@ import { useForm, SubmitHandler, FormProvider } from 'react-hook-form'
 import { ZodSchema } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Field } from '@/components/Field'
-import { ObjectField } from '@/components/ObjectField'
-import { ArrayField } from '@/components/ArrayField'
 import { UISchemaField, UISchemaType } from '@/types/uiSchema'
 
 export interface AutoFormProps<T> {
@@ -11,8 +9,7 @@ export interface AutoFormProps<T> {
   uiSchema: UISchemaType<T>
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function AutoForm<T extends Record<string, any>>({
+export function AutoForm<T extends Record<string, T>>({
   formSchema,
   uiSchema,
 }: AutoFormProps<T>) {
@@ -31,40 +28,8 @@ export function AutoForm<T extends Record<string, any>>({
     <FormProvider {...methods}>
       <form onSubmit={handleSubmit(onSubmit)}>
         {Object.entries(uiSchema).map(
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          ([, field]: [string, UISchemaField<any>]) => {
-            if (field.type === 'object') {
-              return (
-                <ObjectField
-                  id={`${field.id}`}
-                  key={`${field.id}`}
-                  label={field.label}
-                  fields={field.fields}
-                />
-              )
-            }
-
-            if (field.type === 'array') {
-              return (
-                <ArrayField
-                  id={`${field.id}`}
-                  key={`${field.id}`}
-                  label={field.label}
-                  item={field.item}
-                  blankValue={field.blankValue}
-                />
-              )
-            }
-
-            return (
-              <Field
-                key={field.id}
-                id={field.id}
-                label={field.label}
-                placeholder={field.placeholder}
-                type={field.type}
-              />
-            )
+          ([id, field]: [string, UISchemaField<T>]) => {
+            return <Field key={id} id={id} {...field} />
           }
         )}
         <button type="submit">Submit</button>

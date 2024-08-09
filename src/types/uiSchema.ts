@@ -1,29 +1,25 @@
-type UISchemaObjectField<T> = {
+export type UISchemaObjectField<T> = {
   type: 'object'
-  id: string
   label?: string
   fields: UISchemaType<T>
 }
 
 export type UISchemaArrayField<T> = {
   type: 'array'
-  id: string
   label?: string
-  blankValue: T
-  item: Omit<UISchemaValueField, 'id'> | Omit<UISchemaObjectField<T>, 'id'>
+  item: UISchemaValueField | UISchemaObjectField<T>
 }
 
-type UISchemaValueField = {
+export type UISchemaValueField = {
   type: 'text' | 'number' | 'password' | 'email'
-  id: string
   label?: string
   placeholder?: string
+  defaultValue?: string | number
 }
 
 export type UISchemaField<T> =
   | UISchemaObjectField<T>
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  | UISchemaArrayField<any>
+  | UISchemaArrayField<T>
   | UISchemaValueField
 
 export type UISchemaType<T> = {
