@@ -1,35 +1,22 @@
-import React from 'react'
 import { useFormContext } from 'react-hook-form'
 import { ObjectField } from '@/components/ObjectField'
 import { ArrayField } from '@/components/ArrayField'
 import { UISchemaField } from '@/types/uiSchema'
 import { ErrorMessage } from '@hookform/error-message'
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const Field: React.FC<UISchemaField<any>> = (
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  props: UISchemaField<any>
-) => {
+type Props<T> = UISchemaField<T> & { id: string }
+export function Field<T extends Record<string, T>>(props: Props<T>) {
   const {
     register,
     formState: { errors },
   } = useFormContext()
 
   if (props.type === 'object') {
-    return (
-      <ObjectField id={props.id} label={props.label} fields={props.fields} />
-    )
+    return <ObjectField {...props} />
   }
 
   if (props.type === 'array') {
-    return (
-      <ArrayField
-        id={props.id}
-        label={props.label}
-        item={props.item}
-        blankValue={props.blankValue}
-      />
-    )
+    return <ArrayField {...props} />
   }
 
   return (
@@ -42,6 +29,7 @@ export const Field: React.FC<UISchemaField<any>> = (
         name={props.id}
         type={props.type}
         placeholder={props.placeholder}
+        defaultValue={props.defaultValue}
       />
       <ErrorMessage
         errors={errors}

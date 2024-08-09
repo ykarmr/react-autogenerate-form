@@ -1,58 +1,25 @@
-import React from 'react'
 import { Field } from '../Field/Field'
 import { UISchemaType, UISchemaField } from '@/types/uiSchema'
-import { ArrayField } from '../ArrayField'
 
-interface ObjectFieldProps {
+interface ObjectFieldProps<T> {
   id: string
   label?: string
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  fields: UISchemaType<any>
+  fields: UISchemaType<T>
 }
 
-export const ObjectField: React.FC<ObjectFieldProps> = ({
+export function ObjectField<T extends Record<string, T>>({
   id,
   label,
   fields,
-}) => {
+}: ObjectFieldProps<T>) {
   return (
     <div>
       {label && <label>{label}</label>}
 
       {Object.entries(fields).map(
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        ([, field]: [string, UISchemaField<any>]) => {
-          if (field.type === 'object') {
-            return (
-              <ObjectField
-                id={`${id}.${field.id}`}
-                key={`${id}.${field.id}`}
-                label={field.label}
-                fields={field.fields}
-              />
-            )
-          }
-
-          if (field.type === 'array') {
-            return (
-              <ArrayField
-                id={`${id}.${field.id}`}
-                key={`${id}.${field.id}`}
-                label={field.label}
-                item={field.item}
-                blankValue={field.blankValue}
-              />
-            )
-          }
-
+        ([subId, field]: [string, UISchemaField<T>]) => {
           return (
-            <Field
-              id={`${id}.${field.id}`}
-              key={`${id}.${field.id}`}
-              label={field.label}
-              placeholder={field.placeholder}
-              type={field.type}
-            />
+            <Field id={`${id}.${subId}`} key={`${id}.${subId}`} {...field} />
           )
         }
       )}
