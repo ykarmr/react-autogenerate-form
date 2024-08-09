@@ -15,10 +15,10 @@
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "lint": "npm run lint:eslint && npm run lint:prettier",
-    "lint:eslint": "eslint .",
-    "lint:prettier": "prettier --check .",
+    "lint:eslint": "eslint ./src",
+    "lint:prettier": "prettier --check ./src",
     "fix": "npm run fix:eslint && npm run fix:prettier",
-    "fix:eslint": "eslint --fix .",
+    "fix:eslint": "eslint --fix ./src",
     "fix:prettier": "prettier --write ./src"
   },
   "keywords": [],
