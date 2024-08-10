@@ -1,19 +1,27 @@
-import { useForm, SubmitHandler, FormProvider } from 'react-hook-form'
+import {
+  useForm,
+  SubmitHandler,
+  FormProvider,
+  DefaultValues,
+} from 'react-hook-form'
 import { ZodSchema } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Field } from '@/components/Field'
 import { UISchemaField, UISchemaType } from '@/types/uiSchema'
 
 export interface AutoFormProps<T> {
+  defaultValues?: DefaultValues<T>
   formSchema: ZodSchema<T>
   uiSchema: UISchemaType<T>
 }
 
 export function AutoForm<T extends Record<string, T>>({
+  defaultValues,
   formSchema,
   uiSchema,
 }: AutoFormProps<T>) {
   const methods = useForm<T>({
+    defaultValues,
     criteriaMode: 'all',
     resolver: zodResolver(formSchema),
   })
