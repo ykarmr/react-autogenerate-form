@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react'
 import { z } from 'zod'
 import { AutoForm } from './AutoForm'
 import { UISchemaType } from '@/types/uiSchema'
+import { DefaultValues } from 'react-hook-form'
 
 const meta = {
   component: AutoForm,
@@ -14,7 +15,7 @@ type Story = StoryObj<typeof AutoForm>
 
 const formSchema = z.object({
   name: z.string().min(1, 'Name is required'),
-  // age: z.number().min(0, 'Age must be a positive number'),
+  age: z.number().min(0, 'Age must be a positive number'),
   email: z.string().email('Invalid email address'),
   hobbies: z.array(
     z.object({
@@ -38,17 +39,17 @@ const uiSchema: UISchemaType<FormSchemaType> = {
     label: 'Full Name',
     placeholder: 'Enter your full name',
     type: 'text',
+    defaultValue: 'defaultValue',
   },
-  // age: {
-  //   label: 'Age',
-  //   placeholder: 'Enter your age',
-  //   type: 'number',
-  // },
+  age: {
+    label: 'Age',
+    placeholder: 'Enter your age',
+    type: 'number',
+  },
   email: {
     label: 'Email Address',
     placeholder: 'Enter your email',
     type: 'email',
-    defaultValue: 'test',
   },
   // password: {
   //   label: 'Password',
@@ -106,13 +107,18 @@ const uiSchema: UISchemaType<FormSchemaType> = {
     item: {
       type: 'text',
       label: 'address1',
-      defaultValue: 'tesrr',
     },
   },
 }
 
+const defaultValues: DefaultValues<FormSchemaType> = {
+  name: 'test',
+  hobbies: [{ street: '1' }],
+}
+
 export const Default: Story = {
   args: {
+    defaultValues,
     formSchema,
     uiSchema,
   },
