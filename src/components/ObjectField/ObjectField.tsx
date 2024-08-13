@@ -1,5 +1,6 @@
 import { Field } from '../Field/Field'
 import { UISchemaType, UISchemaField } from '@/types/uiSchema'
+import { Box, Typography } from '@mui/material'
 
 interface ObjectFieldProps<T> {
   id: string
@@ -13,9 +14,8 @@ export function ObjectField<T extends Record<string, T>>({
   fields,
 }: ObjectFieldProps<T>) {
   return (
-    <div>
-      {label && <label>{label}</label>}
-
+    <Box sx={{ paddingY: '16px' }}>
+      {label && <Typography variant="h6">{label}</Typography>}
       {Object.entries(fields).map(
         ([subId, field]: [string, UISchemaField<T>]) => {
           return (
@@ -23,6 +23,6 @@ export function ObjectField<T extends Record<string, T>>({
           )
         }
       )}
-    </div>
+    </Box>
   )
 }

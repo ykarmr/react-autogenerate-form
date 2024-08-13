@@ -104,6 +104,7 @@ const uiSchema: UISchemaType<FormSchemaType> = {
   },
   address1: {
     type: 'array',
+    label: 'address1',
     item: {
       type: 'text',
       label: 'address1',

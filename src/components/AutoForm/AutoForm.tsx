@@ -8,6 +8,7 @@ import { ZodSchema } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Field } from '@/components/Field'
 import { UISchemaField, UISchemaType } from '@/types/uiSchema'
+import { Box, Button, Paper } from '@mui/material'
 
 export interface AutoFormProps<T> {
   defaultValues?: DefaultValues<T>
@@ -34,14 +35,33 @@ export function AutoForm<T extends Record<string, T>>({
 
   return (
     <FormProvider {...methods}>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        {Object.entries(uiSchema).map(
-          ([id, field]: [string, UISchemaField<T>]) => {
-            return <Field key={id} id={id} {...field} />
-          }
-        )}
-        <button type="submit">Submit</button>
-      </form>
+      <Paper
+        elevation={3}
+        sx={{ padding: '24px', marginTop: '24px', borderRadius: '8px' }}
+      >
+        <Box
+          component="form"
+          onSubmit={handleSubmit(onSubmit)}
+          sx={{ display: 'flex', flexDirection: 'column', gap: '16px' }}
+        >
+          {Object.entries(uiSchema).map(
+            ([id, field]: [string, UISchemaField<T>]) => {
+              return <Field key={id} id={id} {...field} />
+            }
+          )}
+          <Button
+            variant="contained"
+            color="primary"
+            type="submit"
+            sx={{
+              backgroundColor: '#1976d2',
+              ':hover': { backgroundColor: '#1565c0' },
+            }}
+          >
+            Submit
+          </Button>
+        </Box>
+      </Paper>
     </FormProvider>
   )
 }
