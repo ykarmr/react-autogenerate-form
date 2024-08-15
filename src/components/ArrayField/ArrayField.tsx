@@ -1,6 +1,16 @@
 import { useFieldArray, useFormContext } from 'react-hook-form'
 import { Field } from '../Field/Field'
 import { UISchemaArrayField, UISchemaField } from '@/types/uiSchema'
+import {
+  Box,
+  Button,
+  IconButton,
+  Typography,
+  Card,
+  CardContent,
+} from '@mui/material'
+import RemoveIcon from '@mui/icons-material/Remove'
+import AddIcon from '@mui/icons-material/Add'
 
 type Props<T> = UISchemaArrayField<T> & { id: string }
 
@@ -41,32 +51,70 @@ export function ArrayField<T extends Record<string, T>>({
       return item.defaultValue
     }
   }
+
   return (
-    <div>
-      {label && <label>{label}</label>}
+    <Box
+      sx={{ padding: '16px', backgroundColor: '#f9f9f9', borderRadius: '8px' }}
+    >
+      {label && (
+        <Typography
+          variant="h6"
+          sx={{ marginBottom: '16px', color: '#333', fontWeight: 'bold' }}
+        >
+          {label}
+        </Typography>
+      )}
       {fields.map((field, index) => {
         return (
-          <div key={field.id}>
-            <Field {...item} id={`${id}[${index}]`} />
-            <button
-              type="button"
-              onClick={() => {
-                return remove(index)
+          <Card
+            key={field.id}
+            variant="outlined"
+            sx={{
+              mb: 2,
+              position: 'relative',
+              backgroundColor: '#ffffff',
+              borderRadius: '8px',
+              boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
+              padding: '16px',
+              overflow: 'visible',
+            }}
+          >
+            <IconButton
+              color="error"
+              onClick={() => remove(index)}
+              aria-label="remove"
+              sx={{
+                position: 'absolute',
+                top: '8px',
+                right: '8px',
+                backgroundColor: '#ffffff',
+                ':hover': {
+                  backgroundColor: '#ffebee',
+                },
+                boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.1)',
               }}
             >
-              Remove
-            </button>
-          </div>
+              <RemoveIcon />
+            </IconButton>
+            <CardContent>
+              <Field {...item} id={`${id}[${index}]`} />
+            </CardContent>
+          </Card>
         )
       })}
-      <button
-        type="button"
-        onClick={() => {
-          return append(createBlankValue(item))
+      <Button
+        variant="contained"
+        color="primary"
+        startIcon={<AddIcon />}
+        onClick={() => append(createBlankValue(item))}
+        sx={{
+          marginTop: '16px',
+          backgroundColor: '#1976d2',
+          ':hover': { backgroundColor: '#1565c0' },
         }}
       >
         Add {label}
-      </button>
-    </div>
+      </Button>
+    </Box>
   )
 }
